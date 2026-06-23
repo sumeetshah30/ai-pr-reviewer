@@ -86,10 +86,28 @@ public class ReviewerAgent
             Temperature = 0.7m
         };
 
-        var result = await _client.Messages.GetClaudeMessageAsync(parameters);
+        string rawResponse;
+        try
+        {
+            var result = await _client.Messages.GetClaudeMessageAsync(parameters);
+            rawResponse = result.Message.ToString() ?? "";
+            Console.WriteLine($"[{_agentName}] Got response from Claude");
+        }
+        catch (Exception apiEx)
+        {
+            Console.WriteLine($"[{_agentName}] ERROR: Claude API call failed");
+            Console.WriteLine($"[{_agentName}] {apiEx.Message}");
 
-        var rawResponse = result.Message.ToString() ?? "";
-        Console.WriteLine($"[{_agentName}] Got response from Claude");
+            return (prData, new ReviewResult
+            {
+                OverallSummary = "Claude API call failed — check billing or network",
+                OverallVerdict = "COMMENT",
+                RiskLevel = "UNKNOWN",
+                Issues = new List<ReviewIssue>(),
+                PositiveFeedback = "",
+                Suggestions = new List<string> { $"API Error: {apiEx.Message}" }
+            });
+        }
 
         try
         {
