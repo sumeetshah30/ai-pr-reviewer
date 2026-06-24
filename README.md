@@ -10,7 +10,7 @@ When you run this against a PR, three agents work in sequence:
 2. **ReviewerAgent** — sends the diff to Claude, gets back a structured JSON code review
 3. **CommenterAgent** — posts the review as comments directly on the GitHub PR
 
-
+Three independent "agents" run one after another. **FetcherAgent** talks to GitHub and pulls the code changes from a Pull Request. **ReviewerAgent** takes those changes, builds a prompt, sends it to Claude, and turns Claude's answer into structured data (not just text — actual `Severity`, `IssueType`, `Verdict` fields your code can use). **CommenterAgent** takes that structured data and posts it back onto the real GitHub PR as comments. An **Orchestrator** simply calls these three agents in order and stops cleanly if any step fails. That's the entire system — no magic, no hidden framework, just three classes calling an API each and passing data forward.
 
 ## Real example
 
