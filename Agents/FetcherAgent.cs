@@ -75,6 +75,7 @@ public class FetcherAgent
             PrDescription = pr.Body ?? "No description provided",
             PrAuthor = pr.User.Login,
             RepoName = $"{_repoOwner}/{_repoName}",
+            HeadSha = pr.Head.Sha,
             FilesChanged = filesChanged
         };
     }

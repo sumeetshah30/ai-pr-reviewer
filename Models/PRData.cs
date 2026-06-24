@@ -7,5 +7,6 @@ public class PRData
     public string PrDescription { get; set; } = "";
     public string PrAuthor { get; set; } = "";
     public string RepoName { get; set; } = "";
+    public string HeadSha { get; set; } = "";
     public List<FileChange> FilesChanged { get; set; } = new();
 }
